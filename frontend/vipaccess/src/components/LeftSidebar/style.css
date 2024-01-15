@@ -1,0 +1,62 @@
+.left-sidebar {
+    position: sticky;
+    top: 0;
+    background-color: #f5f8fa;
+    padding: 10px;
+    z-index: 100;
+  }
+
+
+.left-sidebar li {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 8px;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-weight: normal;
+}
+
+.left-sidebar li:hover {
+  background-color: #fff;
+  color: #00aced;
+}
+
+
+/* search input */
+
+    /* Estilos para a classe wrap */
+    .wrap {
+      text-align: center;
+      margin: 20px;
+    }
+
+    /* Estilos para a classe search */
+    .search {
+      display: inline-block;
+      position: relative;
+    }
+
+    /* Estilos para a classe searchTerm (campo de pesquisa) */
+    .searchTerm {
+      width: 200px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+    }
+
+    /* Estilos para a classe searchButton (botão de pesquisa) */
+    .searchButton {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 0 4px 4px 0;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Estilos para o ícone dentro do botão de pesquisa */
+    .searchButton i {
+      margin-right: 4px;
+    }

@@ -1,0 +1,24 @@
+/* src/pages/Home.css */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Três colunas, cada uma ocupando uma fração */
+    gap: 20px;
+    height: 100vh; /* Ocupa a altura total da viewport */
+  }
+  
+  .left-sidebar {
+    background-color: #f5f8fa; /* Cor de fundo da barra lateral à esquerda */
+    padding: 10px;
+  }
+  
+  .main-content {
+    background-color: #ffffff; /* Cor de fundo do conteúdo principal no meio */
+    padding: 10px;
+  }
+  
+  .right-navigation {
+    background-color: #00aced; /* Cor de fundo da navegação à direita */
+    color: white;
+    padding: 10px;
+  }
+  
