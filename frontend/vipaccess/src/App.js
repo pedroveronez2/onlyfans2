@@ -1,6 +1,5 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { UserProvider } from './context/UserContext';
 import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login';
@@ -13,7 +12,6 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <UserProvider>
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -21,7 +19,6 @@ function App() {
             <Route path="/profile" element={<Profile />} />
 
           </Routes>
-        </UserProvider>
       </AuthProvider>
     </Router>
   );

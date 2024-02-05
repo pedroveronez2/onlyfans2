@@ -1,24 +1,21 @@
-// AuthContext.js
 import React, { createContext, useContext, useState } from 'react';
-import axios from 'axios';
-
+import axios from "axios"
+// Criando o contexto
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+// Um componente de provedor que envolve sua aplicação para fornecer o contexto
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (userData) => {
-    setUser(userData);
+  const login = () => {
+    axios.post('http://127.0.0.1:8000/api/login/', {name: "carlos", password: 'carlos12'})
+    // Lógica de autenticação, por exemplo, fazer uma chamada API para verificar as credenciais
+    // Aqui, estamos apenas definindo o usuário como autenticado
   };
 
-  const logout = async () => {
-    try {
-      await axios.post('http://127.0.0.1:8000/api/logout/', { refresh_token: user.refreshToken });
-    } catch (error) {
-      console.error('Erro ao realizar logout:', error.message);
-    }
-
-    // Remova os dados do usuário do contexto
+  const logout = () => {
+    // Lógica de logout, por exemplo, limpar o token de autenticação
+    // Aqui, estamos apenas definindo o usuário como nulo
     setUser(null);
   };
 
@@ -29,10 +26,13 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
+// Um gancho (hook) personalizado para facilitar o uso do contexto
+const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
   }
   return context;
 };
+
+export { AuthProvider, useAuth };

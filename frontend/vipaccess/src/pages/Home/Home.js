@@ -5,13 +5,13 @@ import Navigation from '../../components/Navigation/Navigation';
 import VIPPosts from '../../components/VIPPosts/VIPPosts';
 import LeftSidebar from '../../components/LeftSidebar/LeftSidebar';
 import AddComment from '../../components/AddComment/AddComment';
-import { useUser } from '../../context/UserContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
-  const { userData } = useUser();
+  const { user } = useAuth();
 
   // Verifique se o usuário está autenticado
-  if (!userData) {
+  if (!user) {
     // Se não estiver autenticado, redirecione para a página de login
     return <Navigate to="/login" />;
   }
@@ -20,8 +20,8 @@ const Home = () => {
     <div className="grid-container">
       <nav className="right-navigation"><Navigation /></nav>
       <main className="main-content">
-        <AddComment userData={userData} />
-        <VIPPosts userData={userData} />
+        <AddComment userData={user} />
+        <VIPPosts userData={user} />
       </main>
       <aside className="left-sidebar">
         <LeftSidebar />
