@@ -1,38 +1,44 @@
-import React, { createContext, useContext, useState } from 'react';
-import axios from "axios"
-// Criando o contexto
+// AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
+
 const AuthContext = createContext();
 
-// Um componente de provedor que envolve sua aplicação para fornecer o contexto
-const AuthProvider = ({ children }) => {
+const url = 'http://127.0.0.1:8000/api'
+
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [accessToken, setAccessToken] = useState(() => localStorage.getItem('accessToken') || null);
+  const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refreshToken') || null);
 
-  const login = () => {
-    axios.post('http://127.0.0.1:8000/api/login/', {name: "carlos", password: 'carlos12'})
-    // Lógica de autenticação, por exemplo, fazer uma chamada API para verificar as credenciais
-    // Aqui, estamos apenas definindo o usuário como autenticado
+  const login = async (usernameOrEmail, password) => {
+    try {
+      const response = await axios.post(`${url}/login/`, { email: usernameOrEmail, password });
+      setAccessToken(response.data.jwt);
+      localStorage.setItem('accessToken', accessToken);
+
+      setRefreshToken(response.data.refresh_token);
+      localStorage.setItem('refreshToken', refreshToken);
+      setUser(response.data.user);
+      
+    } catch (error) {
+      // Trate os erros de login
+      console.error('Erro de login:', error);
+    }
   };
 
-  const logout = () => {
-    // Lógica de logout, por exemplo, limpar o token de autenticação
-    // Aqui, estamos apenas definindo o usuário como nulo
-    setUser(null);
-  };
+  const userDetails = async () => {
+    const response = await axios.post(`${url}/user/`, {accessToken})
+  }
+
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, accessToken, login }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Um gancho (hook) personalizado para facilitar o uso do contexto
-const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
-  }
-  return context;
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
-
-export { AuthProvider, useAuth };

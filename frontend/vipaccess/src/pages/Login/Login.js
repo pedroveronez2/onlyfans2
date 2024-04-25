@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-
+import { useAuth } from '../../context/AuthContext';
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuth();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login/', {
-        email: username,
-        password: password,
-      });
 
-      // Lógica para tratar a resposta do servidor após o login
-      console.log('Resposta do servidor:', response.data);
-
+      login(usernameOrEmail, password)
+      console.log(usernameOrEmail,password)
+      // alert('Sucesso!')
     } catch (err) {
-      setError('Erro ao fazer login. Verifique seu nome de usuário e senha.');
-      console.error('Erro ao fazer login:', err);
+      setError('Erro ao fazer login. Verifique seu nome de usuário ou e-mail e senha.');
     }
   };
 
@@ -29,11 +25,11 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <label>
-          Nome de usuário:
+          Nome de usuário ou E-mail:
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
           />
         </label>
         <br />
@@ -48,7 +44,7 @@ const Login = () => {
         <br />
         <button type="submit">Login</button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red ' }}>{error}</p>}
     </div>
   );
 };
