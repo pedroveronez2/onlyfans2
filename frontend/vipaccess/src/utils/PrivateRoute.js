@@ -1,10 +1,10 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-const PrivateRoute = (children, ...rest) => {
+const PrivateRoute = ({children, ...rest}) => {
     const auth = true; 
 
-    return auth ? <Outlet /> : <Navigate to="/login" />;
+    return auth ? children : <Navigate to="/login" />;
 }
 
 

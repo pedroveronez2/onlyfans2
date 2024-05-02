@@ -7,13 +7,13 @@ import Register from './pages/Register/Register';
 import Profile from './pages/Profile/Profile';
 import Header from './components/Header/Header';
 import PrivateRoute from './utils/PrivateRoute'
-import {AuthPrivader} from './context/AuthContext'
+import {AuthProvider} from './context/AuthContext'
 
 
 function App() {
   return (
     <Router>
-      <AuthPrivader>
+      <AuthProvider>
         <Header />
 
         <Routes >
@@ -23,7 +23,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
-      </AuthPrivader>
+      </AuthProvider>
 
 
     </Router>
