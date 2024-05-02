@@ -1,25 +1,31 @@
 import './App.css';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Profile from './pages/Profile/Profile';
-
+import Header from './components/Header/Header';
+import PrivateRoute from './utils/PrivateRoute'
+import {AuthPrivader} from './context/AuthContext'
 
 
 function App() {
   return (
     <Router>
-      <AuthProvider>
-          <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
+      <AuthPrivader>
+        <Header />
 
-          </Routes>
-      </AuthProvider>
+        <Routes >
+          <Route path="/" element={<PrivateRoute ><Home /></PrivateRoute>} exact />
+          
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </AuthPrivader>
+
+
     </Router>
   );
 }

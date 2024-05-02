@@ -1,44 +1,45 @@
-// AuthContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { useEffect, createContext, useState } from "react";
+import jwt_decode from 'jwt-decode'; 
+import { useHistory } from 'react-router-dom'
 
-const AuthContext = createContext();
 
-const url = 'http://127.0.0.1:8000/api'
+const AuthContext = createContext()
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(() => localStorage.getItem('accessToken') || null);
-  const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refreshToken') || null);
 
-  const login = async (usernameOrEmail, password) => {
-    try {
-      const response = await axios.post(`${url}/login/`, { email: usernameOrEmail, password });
-      setAccessToken(response.data.jwt);
-      localStorage.setItem('accessToken', accessToken);
+export const AuthPrivader = ({children}) => {
 
-      setRefreshToken(response.data.refresh_token);
-      localStorage.setItem('refreshToken', refreshToken);
-      setUser(response.data.user);
-      
-    } catch (error) {
-      // Trate os erros de login
-      console.error('Erro de login:', error);
-    }
-  };
+  let [user, setUser] = useState(null)
+  let [authTokens , setAuthTokens] = useState(null)
 
-  const userDetails = async () => {
-    const response = await axios.post(`${url}/user/`, {accessToken})
+  const history = useHistory()
+
+  let loginUser = async (e )=> {
+      e.preventDefault()
+      let response = await fetch('http://127.0.0.1:8000/api/token/', {
+          method:'POST',
+          headers:{
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
+      })
+      let data = await response.json()
+
+      if(response.status === 200){
+          setAuthTokens(data)
+          setUser(jwt_decode(data.access))
+          localStorage.setItem('authTokens', JSON.stringify(data))
+          history.push('/')
+      }else{
+          alert('Something went wrong!')
+      }
   }
 
-
-  return (
-    <AuthContext.Provider value={{ user, accessToken, login }}>
+  let contextdata = {}
+  return(
+    <AuthContext.Provider value={contextdata}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export default AuthContext;
