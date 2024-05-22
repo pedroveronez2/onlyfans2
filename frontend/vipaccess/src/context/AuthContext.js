@@ -7,13 +7,12 @@ const AuthContext = createContext()
 
 
 export const AuthProvider = ({children}) => {
-
-
   let [user, setUser] = useState(() => localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null)
   let [authTokens , setAuthTokens] = useState(() => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
   let [loading, setLoading] = useState(true)
 
   let navigate = useNavigate()
+
   let loginUser = async (e) => {
     e.preventDefault();
   
@@ -34,6 +33,26 @@ export const AuthProvider = ({children}) => {
         setUser(jwtDecode(data.access));
         localStorage.setItem('authTokens', JSON.stringify(data))
         navigate("/")
+      } else {
+        alert('Something went wrong!');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong!');
+    }
+  };
+
+  let registerUser = async (formData) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/register/', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 201) {
+        // Registration successful, you can redirect the user or handle the response as needed
+        alert('Registration successful!');
       } else {
         alert('Something went wrong!');
       }
@@ -99,6 +118,7 @@ export const AuthProvider = ({children}) => {
     authTokens: authTokens,
     loginUser: loginUser,
     logoutUser: logoutUser,
+    registerUser: registerUser,
   }
 
   useEffect(() => {
